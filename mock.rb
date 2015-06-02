@@ -51,30 +51,28 @@ ARGV.each do|time|
     }
     accounts << account
   end
-
   accounts.each do |account|
     ((account[:id]%10)+1).times do |n|
       person = {
-        name: Demode::Generator.name((account[:id]*100) + n),
-        email: Demode::Generator.email((account[:id]*100) + n),
+        name: Demode::Generator.name((account[:id]*200) + n*10),
+        email: Demode::Generator.email((account[:id]*200) + n*10),
         #events: []
       }
       account[:people] << person
     end
     k = rand(100)
     account[:people].each do |person|
-      if k > 0
-        j = rand(k)
-        j.times do
-          event = {
-            name: event_names[rand(14)],
-            timestamp: time
-          }
-          Preact.log_event(person, event, account)
-          #person[:events] << event
-        end
-        k = k - j 
+      break if k < 1
+      j = rand(k)
+      j.times do
+        event = {
+          name: event_names[rand(14)],
+          timestamp: time
+        }
+        Preact.log_event(person, event, account)
+        #person[:events] << event
       end
+      k = k - j 
     end
   end
 end
