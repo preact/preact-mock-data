@@ -23,60 +23,64 @@ Preact.configure do |config|
 	config.secret = "jh9xd2m3yx"
 end
 
-accounts = []
-event_names = [
-	"logged-in",
-	"logged-out",
-	"forgot-password",
-	"changed-password",
-	"updated-profile",
-	"updated-payment",
-	"created-document",
-	"uploaded-media",
-	"modified-dashboard",
-	"viewed-dashboard",
-	"purchased-item",
-	"changed-login",
-	"created-profile",
-	"downgraded",
-	"upgraded",
-	"signed-up"
-]
-
-50.times do |n|
-	account = { 
-		name: Demode::Generator.company_name(n),
-		id: n,
-		people: []
-	}
-	accounts << account
-end
-
-accounts.each do |account|
-	((account[:id]%10)+1).times do |n|
-		person = {
-			name: Demode::Generator.name((account[:id]*100) + n),
-			email: Demode::Generator.email((account[:id]*100) + n),
-			#events: []
+def generate(time)
+	accounts = []
+	event_names = [
+		"logged-in",
+		"logged-out",
+		"forgot-password",
+		"changed-password",
+		"updated-profile",
+		"updated-payment",
+		"created-document",
+		"uploaded-media",
+		"modified-dashboard",
+		"viewed-dashboard",
+		"purchased-item",
+		"changed-login",
+		"created-profile",
+		"downgraded",
+		"upgraded",
+		"signed-up"
+	]
+	50.times do |n|
+		account = { 
+			name: Demode::Generator.company_name(n),
+			id: n,
+			people: []
 		}
-		account[:people] << person
+		accounts << account
 	end
-	k = rand(100)
-	account[:people].each do |person|
-		if k > 0
-			j = rand(k)
-			j.times do
-				event = {
-					name: event_names[rand(16)-1]
-				}
-				Preact.log_event(person, event, account)
-				#person[:events] << event
+
+	accounts.each do |account|
+		((account[:id]%10)+1).times do |n|
+			person = {
+				name: Demode::Generator.name((account[:id]*100) + n),
+				email: Demode::Generator.email((account[:id]*100) + n),
+				#events: []
+			}
+			account[:people] << person
+		end
+		k = rand(100)
+		account[:people].each do |person|
+			if k > 0
+				j = rand(k)
+				j.times do
+					event = {
+						name: event_names[rand(14)],
+						timestamp: time
+					}
+					Preact.log_event(person, event, account)
+					#person[:events] << event
+				end
+				k = k - j 
 			end
-			k = k - j 
 		end
 	end
 end
 
+puts "Enter Timestamp"
+generate(gets)
 # Preact.log_event(
 #   { :email       => "gooley@preact.com",
 #     :name        => "Christopher Gooley",
