@@ -23,26 +23,26 @@ Preact.configure do |config|
 	config.secret = "jh9xd2m3yx"
 end
 
-def generate(time)
-	accounts = []
-	event_names = [
-		"logged-in",
-		"logged-out",
-		"forgot-password",
-		"changed-password",
-		"updated-profile",
-		"updated-payment",
-		"created-document",
-		"uploaded-media",
-		"modified-dashboard",
-		"viewed-dashboard",
-		"purchased-item",
-		"changed-login",
-		"created-profile",
-		"downgraded",
-		"upgraded",
-		"signed-up"
-	]
+accounts = []
+event_names = [
+	"logged-in",
+	"logged-out",
+	"forgot-password",
+	"changed-password",
+	"updated-profile",
+	"updated-payment",
+	"created-document",
+	"uploaded-media",
+	"modified-dashboard",
+	"viewed-dashboard",
+	"purchased-item",
+	"changed-login",
+	"created-profile",
+	"downgraded",
+	"upgraded",
+	"signed-up"
+]
+ARGV.each do|time|
 	50.times do |n|
 		account = { 
 			name: Demode::Generator.company_name(n),
@@ -78,9 +78,6 @@ def generate(time)
 		end
 	end
 end
-
-puts "Enter Timestamp"
-generate(gets)
 # Preact.log_event(
 #   { :email       => "gooley@preact.com",
 #     :name        => "Christopher Gooley",
