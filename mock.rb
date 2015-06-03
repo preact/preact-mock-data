@@ -18,9 +18,11 @@ module Preact
   end
 end
 
+args = ARGV.drop(2)
+
 Preact.configure do |config|
-  config.code = "b27tfenqea"
-  config.secret = "jh9xd2m3yx"
+  config.code = ARGV[0]
+  config.secret = ARGV[1]
 end
 
 accounts = []
@@ -42,7 +44,8 @@ event_names = [
   "upgraded",
   "signed-up"
 ]
-ARGV.each do|time|
+
+args.each do|time|
   50.times do |n|
     account = { 
       name: Demode::Generator.company_name(n),
@@ -54,8 +57,8 @@ ARGV.each do|time|
   accounts.each do |account|
     ((account[:id]%10)+1).times do |n|
       person = {
-        name: Demode::Generator.name((account[:id]*200) + n*10),
-        email: Demode::Generator.email((account[:id]*200) + n*10),
+        name: Demode::Generator.name((account[:id]*1000) + n*100),
+        email: Demode::Generator.email((account[:id]*1000) + n*100),
         #events: []
       }
       account[:people] << person
