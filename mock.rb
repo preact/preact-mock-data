@@ -46,6 +46,7 @@ event_names = [
 ]
 
 args.each do|time|
+  time_offset = 0
   50.times do |n|
     account = { 
       name: Demode::Generator.company_name(n),
@@ -70,9 +71,10 @@ args.each do|time|
       j.times do
         event = {
           name: event_names[rand(14)],
-          timestamp: time
+          timestamp: time.to_i + time_offset
         }
         Preact.log_event(person, event, account)
+        time_offset += 1
         #person[:events] << event
       end
       k = k - j 
