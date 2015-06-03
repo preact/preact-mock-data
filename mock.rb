@@ -25,7 +25,6 @@ Preact.configure do |config|
   config.secret = ARGV[1]
 end
 
-accounts = []
 event_names = [
   "logged-in",
   "logged-out",
@@ -46,6 +45,7 @@ event_names = [
 ]
 
 args.each do|time|
+  accounts = []
   time_offset = 0
   50.times do |n|
     account = { 
