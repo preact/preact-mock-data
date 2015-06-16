@@ -20,6 +20,34 @@ To log a set of random events timestamped for yesterday and the day before:
 $ ruby mock.rb yourcode yoursecret 1 2
 ```
 
+## Advanced
+
+If you wish to customize the names of the generated events, you should edit the mock.rb before running it to update the event_names array to include names relevant to your business or intended usage.
+
+The default is
+
+```
+event_names = [
+  "logged-in",
+  "logged-out",
+  "forgot-password",
+  "changed-password",
+  "updated-profile",
+  "updated-payment",
+  "created-document",
+  "uploaded-media",
+  "modified-dashboard",
+  "viewed-dashboard",
+  "purchased-item",
+  "changed-login",
+  "created-profile",
+  "downgraded",
+  "upgraded",
+  "signed-up"
+]
+
+```
+
 ## License
 
 Copyright (c) 2015 Preact, Inc.
