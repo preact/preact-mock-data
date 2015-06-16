@@ -34,3 +34,6 @@ PLATFORMS
 DEPENDENCIES
   demode
   preact
+
+BUNDLED WITH
+   1.10.2

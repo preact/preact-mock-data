@@ -44,10 +44,10 @@ event_names = [
   "signed-up"
 ]
 
-args.each do|time|
+args.each do |days_ago|
   accounts = []
   time_offset = 0
-  50.times do |n|
+  (rand(25) + 25).times do |n|
     account = { 
       name: Demode::Generator.company_name(n),
       id: n,
@@ -64,14 +64,14 @@ args.each do|time|
       }
       account[:people] << person
     end
-    k = rand(100)
+    k = rand(90) + 10
     account[:people].each do |person|
       break if k < 1
       j = rand(k)
       j.times do
         event = {
           name: event_names[rand(14)],
-          timestamp: time.to_i + time_offset
+          timestamp: Time.now.to_i - (days_ago.to_i * 24 * 3600) + time_offset
         }
         Preact.log_event(person, event, account)
         time_offset += 1
