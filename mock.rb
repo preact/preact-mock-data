@@ -48,7 +48,8 @@ event_names = [
 event_names_count = event_names.count
 
 accounts = []
-time_offset = 0
+logs = []
+
 50.times do |n|
   account = { 
     name: Demode::Generator.company_name(n),
@@ -58,6 +59,7 @@ time_offset = 0
   accounts << account
 end
 accounts.each do |account|
+  time_offset = 0
   ((account[:id]%10)+1).times do |n|
     person = {
       name: Demode::Generator.name((account[:id]*1000) + n*100),
@@ -73,21 +75,26 @@ accounts.each do |account|
   k_init_half = k/2 + 1
   while k > 1 do
     account[:people].each do |person|
-      # no person should have more than half of the events for an account
+      # no person should have more than half of the potential events for an account
       j = rand([k,k_init_half].min)
       j.times do
         event = {
           name: event_names[rand(event_names_count)],
-          timestamp: Time.now.to_i - ((rand(event_multiplier * 3) + 1) * 24 * 3600) + time_offset
+          timestamp: Time.now.to_i - ((rand(event_multiplier * 2)) * 24 * 3600) + time_offset
         }
-        Preact.log_event(person, event, account)
+        logs << { person: person, event: event, account: account }
         time_offset += 1
-        #person[:events] << event
       end
       k = k - j 
     end
   end
 end
+
+logs.sort! {|x,y| x[:event][:timestamp]<=>y[:event][:timestamp]}
+logs.each do |log|
+  Preact.log_event(log[:person], log[:event], log[:account])
+end
+
 puts "FINISHED, IGNORE ALL ERRORS AFTER THIS"
 # Preact.log_event(
 #   { :email       => "gooley@preact.com",
