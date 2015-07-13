@@ -45,34 +45,40 @@ event_names = [
   "signed-up"
 ]
 
-args.each do |days_ago|
-  accounts = []
-  time_offset = 0
-  (rand(25) + 25).times do |n|
-    account = { 
-      name: Demode::Generator.company_name(n),
-      id: n,
-      people: []
+event_names_count = event_names.count
+
+accounts = []
+time_offset = 0
+50.times do |n|
+  account = { 
+    name: Demode::Generator.company_name(n),
+    id: n,
+    people: []
+  }
+  accounts << account
+end
+accounts.each do |account|
+  ((account[:id]%10)+1).times do |n|
+    person = {
+      name: Demode::Generator.name((account[:id]*1000) + n*100),
+      email: Demode::Generator.email((account[:id]*1000) + n*100),
+      #events: []
     }
-    accounts << account
+    account[:people] << person
   end
-  accounts.each do |account|
-    ((account[:id]%10)+1).times do |n|
-      person = {
-        name: Demode::Generator.name((account[:id]*1000) + n*100),
-        email: Demode::Generator.email((account[:id]*1000) + n*100),
-        #events: []
-      }
-      account[:people] << person
-    end
-    k = rand(90) + 10
+  # event_multiplier will default to 1, and won't be less than 1
+  event_multiplier = args.first.to_i || 1
+  event_multiplier = [event_multiplier, 1].max
+  k = rand((10 * event_multiplier)..(90 * event_multiplier))
+  k_init_half = k/2 + 1
+  while k > 1 do
     account[:people].each do |person|
-      break if k < 1
-      j = rand(k)
+      # no person should have more than half of the events for an account
+      j = rand([k,k_init_half].min)
       j.times do
         event = {
-          name: event_names[rand(14)],
-          timestamp: Time.now.to_i - (days_ago.to_i * 24 * 3600) + time_offset
+          name: event_names[rand(event_names_count)],
+          timestamp: Time.now.to_i - ((rand(event_multiplier * 3) + 1) * 24 * 3600) + time_offset
         }
         Preact.log_event(person, event, account)
         time_offset += 1
@@ -81,8 +87,8 @@ args.each do |days_ago|
       k = k - j 
     end
   end
-  puts "#{days_ago} days ago events finished"
 end
+puts "FINISHED, IGNORE ALL ERRORS AFTER THIS"
 # Preact.log_event(
 #   { :email       => "gooley@preact.com",
 #     :name        => "Christopher Gooley",
