@@ -23,6 +23,7 @@ args = ARGV.drop(2)
 Preact.configure do |config|
   config.code = ARGV[0]
   config.secret = ARGV[1]
+  config.request_timeout = nil
 end
 
 event_names = [
@@ -80,6 +81,7 @@ args.each do |days_ago|
       k = k - j 
     end
   end
+  puts "#{days_ago} days ago events finished"
 end
 # Preact.log_event(
 #   { :email       => "gooley@preact.com",
