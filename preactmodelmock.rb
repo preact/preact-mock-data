@@ -1,15 +1,15 @@
 require 'preact'
 require 'demode'
 
-class Mock
+class PreactModelMock
   
   def initialize(code, secret, configuration = {}, defaults= {})
-    Preact.configure do |config|
+    ::Preact.configure do |config|
       config.code = code
       config.secret = secret
       config.request_timeout = nil
-      if configuration[:scheme] { config.scheme = configuration[:scheme] }
-      if configuration[:host] { config.host = configuration[:host] }
+      config.scheme = configuration[:scheme] if configuration[:scheme] 
+      config.host = configuration[:host] if configuration[:host] 
     end
     
     @event_names = [
@@ -51,6 +51,7 @@ class Mock
       }
       accounts << account
     end
+    accounts
   end
 
   def self.generate_people(person_num, multiplier = 1)
@@ -62,14 +63,16 @@ class Mock
       }
       people << person
     end
+    people
   end
 
   def self.log_events(logs)
+  	logs.flatten!(1)
     logs.sort! {|x,y| x[:event][:timestamp]<=>y[:event][:timestamp]}
     logs.each do |log|
-      Preact.log_event(log[:person], log[:event], log[:account])
+      ::Preact.log_event(log[:person], log[:event], log[:account])
     end
-    puts "FINISHED, IGNORE ALL ERRORS AFTER THIS"
+    puts "RUNNING, IGNORE ALL ERRORS AFTER THIS"
   end
 
   def generate_random_account_events(account, event_names_count)
@@ -101,14 +104,14 @@ class Mock
   def generate_batch
     accounts = []
     logs = []
-    accounts = Mock.generate_accounts(@account_num)
+    accounts = PreactModelMock.generate_accounts(@account_num)
     event_names_count = @event_names.count
     accounts.each do |account|
       #Will vary the person number per account the same every execution
-      account[:people] = Mock.generate_people(((account[:id] % @person_num) + 1), account[:id])
+      account[:people] = PreactModelMock.generate_people(((account[:id] % @person_num) + 1), account[:id])
       logs << generate_random_account_events(account, event_names_count)
     end
-    Mock.log_events(logs)
+    PreactModelMock.log_events(logs)
   end
 
   module Preact 
