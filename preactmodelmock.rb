@@ -121,12 +121,8 @@ class PreactModelMock
         psn = person.nil? ? nil : person.to_hash
         evt = event.nil? ? nil : event.to_hash
 
-        if defined?(Preact::Sidekiq) && (configuration.logging_mode.nil? || configuration.logging_mode == :sidekiq)
-          Preact::Sidekiq::PreactLoggingWorker.perform_async(psn, evt)
-        else
-          # use the background thread logger
-          Preact::BackgroundLogger.new.perform(psn, evt)
-        end
+        print "."
+        ::Preact.client.create_event(psn, evt)
       end 
     end
   end
