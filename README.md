@@ -9,25 +9,17 @@ Takes api code/secret on execution and one or more integers of how many days ago
 
 ```
 $ bundle
-$ ruby mock.rb code secret day1 [day2 day3]
-```
-
-## Example
-
-To log a set of random events timestamped for yesterday and the day before:
-
-```
-$ ruby mock.rb yourcode yoursecret 1 2
+$ ruby mock.rb code secret
 ```
 
 ## Advanced
 
-If you wish to customize the names of the generated events, you should edit the mock.rb before running it to update the event_names array to include names relevant to your business or intended usage.
+If you wish to customize the names of the generated events, you should edit the preactmodelmock.rb before running it to update the event_names array to include names relevant to your business or intended usage.
 
 The default is
 
 ```
-event_names = [
+@event_names = [
   "logged-in",
   "logged-out",
   "forgot-password",
