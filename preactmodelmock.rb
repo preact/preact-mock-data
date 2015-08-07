@@ -113,26 +113,26 @@ class PreactModelMock
     end
     PreactModelMock.log_events(logs)
   end
-
-  module Preact 
-    class << self
-      protected
-      def send_log(person, event=nil)
-        psn = person.nil? ? nil : person.to_hash
-        evt = event.nil? ? nil : event.to_hash
-
-        print "."
-        ::Preact.client.create_event(psn, evt)
-      end 
-    end
-  end
-  # Preact.log_event(
-  #   { :email       => "gooley@preact.com",
-  #     :name        => "Christopher Gooley",
-  #     :created_at  => 1367259292,
-  #     :uid         => "gooley"
-  #   }, {
-  #     :name        => "registered"
-  #   }
-  # )
 end
+
+module Preact 
+  class << self
+    protected
+    def send_log(person, event=nil)
+      psn = person.nil? ? nil : person.to_hash
+      evt = event.nil? ? nil : event.to_hash
+
+      print "."
+      ::Preact.client.create_event(psn, evt)
+    end 
+  end
+end
+# Preact.log_event(
+#   { :email       => "gooley@preact.com",
+#     :name        => "Christopher Gooley",
+#     :created_at  => 1367259292,
+#     :uid         => "gooley"
+#   }, {
+#     :name        => "registered"
+#   }
+# )
