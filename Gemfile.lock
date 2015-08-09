@@ -34,3 +34,7 @@ PLATFORMS
 DEPENDENCIES
   demode
   preact
+  rest-client
+
+BUNDLED WITH
+   1.10.6
