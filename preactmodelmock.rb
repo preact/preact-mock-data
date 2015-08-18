@@ -58,8 +58,8 @@ class PreactModelMock
     people = []
     person_num.times do |n|
       person = {
-        name: Demode::Generator.name((multiplier*1000) + n*99),
-        email: Demode::Generator.email((multiplier*1000) + n*99),
+        name: Demode::Generator.name((multiplier*10) + n*900),
+        email: Demode::Generator.email((multiplier*10) + n*900),
       }
       people << person
     end
