@@ -22,10 +22,33 @@ class PreactAccountMock
       "Billy McCool"
     ]
 
+    @account_owner_names = [
+      "George Washington",
+      "John Adams",
+      "John Kennedy",
+      "Wilson Phillips"
+    ]
+
     @account_templates = [
-      [4, { license_status: ["Active", "Active", "Active", "Cancelled"], license_mrr: [9, 99, 99, 499, 499, 999], license_type: ["Annual"], account_manager_name: @account_manager_names, trial_end: 12.times.map{ |i| ago(i, MONTHS) }, license_renewal: 52.times.map{ |i| from_now(i, WEEKS) } }],
-      [4, { license_status: ["Active", "Active", "Active", "Cancelled"], license_mrr: [9, 99, 99, 499, 499, 999], license_type: ["Monthly"], account_manager_name: @account_manager_names, trial_end: 12.times.map{ |i| ago(i, MONTHS) }, license_renewal: 30.times.map{ |i| from_now(i, DAYS) } }],
-      [1, { license_status: "Trial", trial_end: 14.times.map{ |i| from_now(i, DAYS) }} ]
+      [4, { license_status: ["Active", "Active", "Active", "Cancelled"], 
+            license_mrr: [9, 99, 99, 499, 499, 999], 
+            license_type: ["Annual"], 
+            account_manager_name: @account_manager_names, 
+            account_owner_name: @account_owner_names, 
+            trial_end: 12.times.map{ |i| ago(i, MONTHS) }, 
+            license_renewal: 52.times.map{ |i| from_now(i, WEEKS) } 
+          }],
+      [4, { license_status: ["Active", "Active", "Active", "Cancelled"], 
+            license_mrr: [9, 99, 99, 499, 499, 999], 
+            license_type: ["Monthly"], 
+            account_manager_name: @account_manager_names, 
+            account_owner_name: @account_owner_names, 
+            trial_end: 12.times.map{ |i| ago(i, MONTHS) }, 
+            license_renewal: 30.times.map{ |i| from_now(i, DAYS) } 
+          }],
+      [1, { license_status: "Trial", 
+            trial_end: 14.times.map{ |i| from_now(i, DAYS) } 
+          }]
     ]
 
     if defaults && defaults.is_a?(Hash)
