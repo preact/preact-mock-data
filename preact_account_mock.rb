@@ -23,8 +23,9 @@ class PreactAccountMock
     ]
 
     @account_templates = [
-      [3, { license_status: ["Active", "Cancelled"], license_mrr: [9, 99, 99, 499], license_type: ["Monthly", "Monthly", "Annual"], account_manager_name: @account_manager_names }],
-      [1, { license_status: "Trial"}]
+      [4, { license_status: ["Active", "Active", "Active", "Cancelled"], license_mrr: [9, 99, 99, 499, 499, 999], license_type: ["Annual"], account_manager_name: @account_manager_names, trial_end: 12.times.map{ |i| ago(i, MONTHS) }, license_renewal: 52.times.map{ |i| from_now(i, WEEKS) } }],
+      [4, { license_status: ["Active", "Active", "Active", "Cancelled"], license_mrr: [9, 99, 99, 499, 499, 999], license_type: ["Monthly"], account_manager_name: @account_manager_names, trial_end: 12.times.map{ |i| ago(i, MONTHS) }, license_renewal: 30.times.map{ |i| from_now(i, DAYS) } }],
+      [1, { license_status: "Trial", trial_end: 14.times.map{ |i| from_now(i, DAYS) }} ]
     ]
 
     if defaults && defaults.is_a?(Hash)
@@ -34,8 +35,20 @@ class PreactAccountMock
     end
   end
 
+  DAYS = 3600*24
+  WEEKS = DAYS * 7
+  MONTHS = WEEKS * 4
+
+  def from_now(i, incr)
+    Time.now + i * incr
+  end
+
+  def ago(i, incr)
+    Time.now - i * incr
+  end
+
   def update_accounts
-    account_report = JSON.parse(RestClient.get "https://#{@code}:#{@secret}@secure.preact.com/api/v2/reports/53514b8f4443ae11f3000001/list", {:accept => :json})
+    account_report = JSON.parse(RestClient.get "https://#{@code}:#{@secret}@secure.preact.com/api/v2/reports/53514b8f4443ae11f3000001/list?limit=5000", {:accept => :json})
 
     accounts = account_report['results'].map do |a|
       account = { id: a['external_identifier'] }.merge(get_random_account_properties)
